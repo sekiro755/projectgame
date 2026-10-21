@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0a1a">
+  <meta name="format-detection" content="telephone=no">
+  <title>Дурак Неон</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Шрифт грузится без блокировки отрисовки: пока его нет, работает системный -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 1. Загрузка -->
+  <section class="screen active" id="scr-loading">
+    <div class="logo">
+      <div class="logo-cards">
+        <span class="lc lc1"><b>Т</b><i>♠&#xFE0E;</i></span>
+        <span class="lc lc2"><b>Т</b><i>♥&#xFE0E;</i></span>
+        <span class="lc lc3"><b>6</b><i>♦&#xFE0E;</i></span>
+      </div>
+      <h1 class="logo-title">ДУРАК<span>НЕОН</span></h1>
+    </div>
+    <div class="loader"><i id="loader-bar"></i></div>
+    <p class="loading-tip" id="loading-tip">Тасуем колоду…</p>
+  </section>
+
+  <!-- 2. Главное меню -->
+  <section class="screen" id="scr-menu">
+    <header class="topbar">
+      <button class="profile-chip" id="m-profile" aria-label="Профиль">
+        <span class="ava" id="m-ava"></span>
+        <span class="pc-info">
+          <b id="m-name">Игрок</b>
+          <small id="m-rank">Салага · ур. 1</small>
+          <span class="xpbar"><i id="m-xp"></i></span>
+        </span>
+      </button>
+      <div class="coins" id="m-coins"><span>🪙</span><b>0</b></div>
+      <button class="icon-btn" id="m-sound" aria-label="Звук">🔊</button>
+    </header>
+
+    <div class="menu-hero">
+      <div class="logo-cards small">
+        <span class="lc lc1"><b>Т</b><i>♠&#xFE0E;</i></span>
+        <span class="lc lc2"><b>Т</b><i>♥&#xFE0E;</i></span>
+        <span class="lc lc3"><b>6</b><i>♦&#xFE0E;</i></span>
+      </div>
+      <h1 class="logo-title small">ДУРАК<span>НЕОН</span></h1>
+      <div class="streak-chip" id="m-streak" hidden>🔥 Серия побед: <b>0</b></div>
+    </div>
+
+    <div class="setup">
+      <div class="setup-row">
+        <span class="setup-label">Режим</span>
+        <div class="seg" id="seg-mode">
+          <button data-v="classic">Подкидной</button>
+          <button data-v="transfer">Переводной</button>
+        </div>
+      </div>
+      <div class="setup-row">
+        <span class="setup-label">Соперники</span>
+        <div class="seg" id="seg-diff">
+          <button data-v="novice">Новичок</button>
+          <button data-v="normal">Норм</button>
+          <button data-v="pro">Профи</button>
+        </div>
+      </div>
+      <div class="setup-row">
+        <span class="setup-label">Игроков</span>
+        <div class="seg" id="seg-players">
+          <button data-v="2">2</button>
+          <button data-v="3">3</button>
+          <button data-v="4">4</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-play" id="m-play">Играть</button>
+
+    <div class="menu-grid">
+      <button class="tile" id="m-shop"><span class="tile-ico">🎨</span><span>Скины</span></button>
+      <button class="tile" id="m-quests"><span class="tile-ico">🎯</span><span>Задания</span><i class="badge" id="m-quests-badge" hidden></i></button>
+      <button class="tile" id="m-prof"><span class="tile-ico">📊</span><span>Профиль</span></button>
+      <button class="tile" id="m-rules"><span class="tile-ico">📖</span><span>Правила</span></button>
+    </div>
+
+    <div class="menu-bottom">
+      <button class="btn btn-ghost" id="m-invite">👋 Пригласить друзей</button>
+      <button class="btn btn-ad" id="m-adbonus" data-ad>🎬 +30 🪙 <small id="m-adbonus-left"></small></button>
+    </div>
+  </section>
+
+  <!-- 3. Игровой стол -->
+  <section class="screen" id="scr-game">
+    <header class="g-top">
+      <button class="icon-btn" id="g-menu" aria-label="Пауза">⏸</button>
+      <div class="g-info">
+        <span id="g-mode-label">Подкидной</span>
+        <span class="g-trump" id="g-trump-label" title="Козырь">♥</span>
+      </div>
+      <button class="icon-btn" id="g-sound" aria-label="Звук">🔊</button>
+    </header>
+
+    <div class="g-opps" id="g-opps"></div>
+
+    <div class="g-table" id="g-table">
+      <div class="g-deck" id="g-deck"></div>
+      <div class="g-battle" id="g-battle"></div>
+      <div class="g-discard" id="g-discard"></div>
+      <div class="g-banner" id="g-banner"></div>
+    </div>
+
+    <div class="g-me">
+      <div class="g-bar">
+        <div class="me-ava" id="g-me-ava"></div>
+        <div class="g-status" id="g-status"></div>
+        <button class="btn btn-ad btn-chance" id="g-chance" data-ad hidden>🎬 Второй шанс</button>
+        <button class="btn btn-action" id="g-action" hidden>Беру</button>
+      </div>
+      <div class="g-hand" id="g-hand"></div>
+    </div>
+  </section>
+
+  <!-- 4. Результат -->
+  <section class="screen" id="scr-result">
+    <div class="res">
+      <div class="res-emoji" id="r-emoji">😎</div>
+      <h2 class="meme" id="r-title">ТЫ НЕ ДУРАК</h2>
+      <p class="res-sub" id="r-sub"></p>
+      <div class="res-rewards">
+        <div class="rw"><span>🪙</span><b id="r-coins">+0</b><small>монеты</small></div>
+        <div class="rw"><span>⭐</span><b id="r-xp">+0</b><small>опыт</small></div>
+        <div class="rw" id="r-streak-box"><span>🔥</span><b id="r-streak">0</b><small>серия</small></div>
+      </div>
+      <div class="res-level">
+        <div class="res-rank"><b id="r-rank">Салага</b><span id="r-lvl">ур. 1</span></div>
+        <div class="xpbar big"><i id="r-xpbar"></i></div>
+      </div>
+      <button class="btn btn-ad" id="r-double" data-ad>🎬 Удвоить монеты</button>
+      <div class="res-actions">
+        <button class="btn btn-play" id="r-again">Ещё раз</button>
+        <div class="res-row">
+          <button class="btn btn-ghost" id="r-share">📤 Поделиться</button>
+          <button class="btn btn-ghost" id="r-menu">🏠 В меню</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Магазин скинов -->
+  <section class="screen" id="scr-shop">
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Назад">←</button>
+      <h2 class="scr-title">Скины</h2>
+      <div class="coins" id="s-coins"><span>🪙</span><b>0</b></div>
+    </header>
+    <p class="scr-note">Только за игровые монеты, уровни и рекламу. Никаких покупок за деньги.</p>
+    <div class="shop-list scroll" id="shop-list"></div>
+  </section>
+
+  <!-- Задания и бонус за вход -->
+  <section class="screen" id="scr-quests">
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Назад">←</button>
+      <h2 class="scr-title">Задания</h2>
+      <div class="coins" id="q-coins"><span>🪙</span><b>0</b></div>
+    </header>
+    <div class="scroll">
+      <div class="panel daily" id="q-daily"></div>
+      <h3 class="sub-title">Задания дня <small id="q-reset"></small></h3>
+      <div class="quest-list" id="quest-list"></div>
+    </div>
+  </section>
+
+  <!-- 6. Профиль -->
+  <section class="screen" id="scr-profile">
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Назад">←</button>
+      <h2 class="scr-title">Профиль</h2>
+      <div class="coins" id="p-coins"><span>🪙</span><b>0</b></div>
+    </header>
+    <div class="scroll">
+      <div class="panel prof-head">
+        <span class="ava big" id="p-ava"></span>
+        <div>
+          <b class="prof-name" id="p-name">Игрок</b>
+          <div class="prof-rank" id="p-rank">Салага · ур. 1</div>
+          <div class="xpbar big"><i id="p-xp"></i></div>
+          <small class="muted" id="p-next"></small>
+        </div>
+      </div>
+      <div class="stats" id="p-stats"></div>
+      <h3 class="sub-title">Настройки</h3>
+      <div class="panel settings">
+        <label class="toggle"><span>🔊 Звук</span><input type="checkbox" id="set-sound"><i></i></label>
+        <label class="toggle"><span>📳 Вибрация</span><input type="checkbox" id="set-vibro"><i></i></label>
+        <label class="toggle"><span>⚡ Быстрые боты</span><input type="checkbox" id="set-fast"><i></i></label>
+      </div>
+      <div class="prof-actions">
+        <button class="btn btn-ghost" id="p-tutorial">🎓 Пройти обучение заново</button>
+        <button class="btn btn-ghost" id="p-fav">⭐ Добавить в избранное</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Правила и обучение -->
+  <section class="screen" id="scr-rules">
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Назад">←</button>
+      <h2 class="scr-title">Как играть</h2>
+      <span class="topbar-spacer"></span>
+    </header>
+    <div class="scroll rules">
+      <div class="rule"><span>🎯</span><p><b>Цель</b> — первым избавиться от карт. Кто остался с картами последним — тот и дурак.</p></div>
+      <div class="rule"><span>🃏</span><p>Колода 36 карт, у каждого по 6. Последняя карта колоды лежит открыто — это <b>козырь</b>.</p></div>
+      <div class="rule"><span>⚔️</span><p>Первым ходит тот, у кого <b>младший козырь</b>.</p></div>
+      <div class="rule"><span>🛡️</span><p><b>Отбиться</b> — положить старшую карту той же масти или любой козырь. Козырь бьётся только старшим козырем.</p></div>
+      <div class="rule"><span>➕</span><p><b>Подкидывать</b> можно карты того же достоинства, что уже лежат на столе. Всего не больше 6 и не больше, чем карт у отбивающегося.</p></div>
+      <div class="rule"><span>✋</span><p>Не отбиться — жми <b>«Беру»</b> и забирай все карты со стола. Тебе ещё могут подкинуть вдогонку.</p></div>
+      <div class="rule"><span>✅</span><p>Всё побито — <b>«Бито»</b>: карты уходят в отбой, ходит тот, кто отбивался.</p></div>
+      <div class="rule"><span>🔁</span><p><b>Переводной</b>: пока ни одна карта не побита, можно положить карту того же достоинства — и отбиваться будет следующий игрок.</p></div>
+      <div class="rule"><span>📥</span><p>После хода все добирают до 6 карт: сначала атаковавший, последним — отбивавшийся.</p></div>
+      <div class="rule"><span>🤝</span><p>Если карты закончились у всех одновременно — <b>ничья</b>.</p></div>
+      <div class="rule"><span>👆</span><p><b>Управление</b>: тапни карту, чтобы сходить, или перетащи её на стол. Чтобы побить конкретную карту — перетащи прямо на неё.</p></div>
+      <button class="btn btn-play" id="rules-tutorial">🎓 Обучающая партия</button>
+      <button class="btn btn-ghost" id="rules-skip" hidden>Я умею играть</button>
+    </div>
+  </section>
+</div>
+
+<div id="fx"></div>
+<div id="modal-root"></div>
+<div id="toasts"></div>
+<div id="rotate-hint"><span>📱</span>Поверни телефон вертикально</div>
+
+<!-- VK Bridge подключается в js/vk.js: с CDN unpkg, при сбое — локальная копия js/vendor -->
+<script src="js/engine.js"></script>
+<script src="js/bots.js"></script>
+<script src="js/vk.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/ads.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
