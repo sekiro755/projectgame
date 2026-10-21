@@ -1,0 +1,13 @@
+{
+  "name": "durak-neon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Карточная игра «Дурак» (подкидной и переводной) для ВК Игры на чистом HTML/CSS/JS",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node --test tests/engine.test.js && node tests/simulate.js 1000",
+    "pack": "sh pack.sh",
+    "deploy": "sh pack.sh && npx @vkontakte/vk-miniapps-deploy@1.0.3"
+  },
+  "license": "UNLICENSED"
+}
